@@ -3,9 +3,8 @@ package com.synechron.wordcount.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.synechron.Translator;
 import com.synechron.Word;
-import com.synechron.WordRepo;
+import com.synechron.wordcount.service.WordCounterService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import static org.mockito.Mockito.when;
@@ -32,9 +29,7 @@ class WordCounterControllerTest {
     private MockMvc mvc;
 
     @Mock
-    private WordRepo wordRepo;
-    @Mock
-    private Translator translator;
+    private WordCounterService wordCounterService;
 
     @InjectMocks
     private WordCounterController wordCounterController;
@@ -48,13 +43,7 @@ class WordCounterControllerTest {
     @Test
     void shouldReturnCountOnGet() throws Exception {
 
-        List<Word> wordList = Arrays.asList(new Word(Locale.ENGLISH, "flower"),
-                new Word(Locale.forLanguageTag("es-ES"), "flor"),
-                new Word(Locale.forLanguageTag("de-DE"), "blume"));
-
-        when(wordRepo.getAll()).thenReturn(wordList);
-        when(translator.translate("flor")).thenReturn("flower");
-        when(translator.translate("blume")).thenReturn("flower");
+        when(wordCounterService.count("flower")).thenReturn(3);
 
         mvc.perform(get("/v1/words/flower/count")
                         .accept(MediaType.APPLICATION_JSON))

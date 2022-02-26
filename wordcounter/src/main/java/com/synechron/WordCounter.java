@@ -12,14 +12,18 @@ public class WordCounter {
         this.translator = translator;
     }
     public int count(String word) {
-        return (int) wordRepo.getAll().stream().filter(matching(word)).count();
+        return wordRepo.getAll(word).stream().mapToInt(w -> w.getCount()).sum();
     }
 
     public void add(Word word) {
         if( !word.isValid()) {
             throw new RuntimeException(word.getValue() + "not a valid word");
         }
-        wordRepo.add(word);
+        String key = word.getValue();
+        if (!word.getLanguage().equals(Locale.ENGLISH)) {
+            key = translator.translate(word.getValue());
+        }
+        wordRepo.add(key, word);
     }
 
 

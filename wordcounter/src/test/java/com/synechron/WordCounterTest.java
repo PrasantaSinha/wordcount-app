@@ -18,10 +18,10 @@ public class WordCounterTest {
         Word flower2 = new Word(Locale.ENGLISH, "flower");
 
         WordRepo wordRepo = new WordRepo();
-        wordRepo.add(flower1);
-        wordRepo.add(flower2);
 
         WordCounter wordCounter = new WordCounter(wordRepo, translatorMock);
+        wordCounter.add(flower1);
+        wordCounter.add(flower2);
 
         assertEquals("Incorrect word count", 2, wordCounter.count("flower"));
 
