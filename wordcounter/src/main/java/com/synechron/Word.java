@@ -18,4 +18,13 @@ public class Word {
     public Locale getLanguage() {
         return language;
     }
+
+    public boolean isValid() {
+        for ( char c : value.toCharArray()) {
+            if( (c < 'a' && c > 'z') || (c < 'A' && c > 'Z'))
+                return false;
+
+        }
+        return true;
+    }
 }

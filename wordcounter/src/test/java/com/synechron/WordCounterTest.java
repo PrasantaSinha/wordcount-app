@@ -37,13 +37,26 @@ public class WordCounterTest {
         Mockito.when(translatorMock.translate("blume")).thenReturn("flower");
 
         WordRepo wordRepo = new WordRepo();
-        wordRepo.add(flower);
-        wordRepo.add(flor);
-        wordRepo.add(blume);
 
         WordCounter wordCounter = new WordCounter(wordRepo, translatorMock);
+        wordCounter.add(flower);
+        wordCounter.add(flor);
+        wordCounter.add(blume);
 
         assertEquals("Incorrect word count", 3, wordCounter.count("flower"));
 
+    }
+
+
+    @Test
+    public void shouldValidateWords() {
+        Word flow1er = new Word(Locale.ENGLISH, "flow1er");
+        WordRepo wordRepo = new WordRepo();
+        WordCounter wordCounter = new WordCounter(wordRepo, translatorMock);
+        try {
+            wordCounter.add(flow1er);
+        } catch (Exception e) {
+            assertEquals("flow1er not a valid word",  e.getMessage());
+        }
     }
 }

@@ -15,6 +15,14 @@ public class WordCounter {
         return (int) wordRepo.getAll().stream().filter(matching(word)).count();
     }
 
+    public void add(Word word) {
+        if( !word.isValid()) {
+            throw new RuntimeException(word.getValue() + "not a valid word");
+        }
+        wordRepo.add(word);
+    }
+
+
     private Predicate<Word> matching(String word) {
         return w -> {
             if (!w.getLanguage().equals(Locale.ENGLISH)) {
