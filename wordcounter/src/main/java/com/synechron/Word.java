@@ -3,8 +3,10 @@ package com.synechron;
 import java.util.Locale;
 
 public class Word {
-    private final String value;
-    private final Locale language;
+    private String value;
+    private Locale language;
+
+    public Word() { }
 
     public Word(Locale language, String value) {
         this.language = language;
